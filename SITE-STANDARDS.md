@@ -58,7 +58,8 @@ secrets, GitHub Actions secrets or the cloud environment's settings.
 
 ## 5. Cloudflare security settings
 
-- **Bot Fight Mode** on (verified search engine bots still get through; see the search engine rule below).
+- **Bot Fight Mode off.** On the free plan no rule can make an exception to it, so it blocks our own jobs
+  (IndexNow submissions, monitoring) and can catch search engines. The WAF rules below do its job.
 - **WAF**: the Cloudflare Free Managed Ruleset on.
 - **Rate limiting** rule on every form or API that writes (for example POST /api/reviews: 10 a minute
   per IP, block for a minute).
@@ -74,8 +75,6 @@ secrets, GitHub Actions secrets or the cloud environment's settings.
     (`and not ends_with(http.request.uri.path, ".xml") and not ends_with(http.request.uri.path, ".txt")`);
   - block crawlers by user agent only by name (the AI training bots and scrapers in section 6), never a
     generic "bot" or "crawler" match.
-- **Bot Fight Mode on the free plan cannot be skipped by any rule.** If Search Console still shows 403s with
-  the rules above in place, turn Bot Fight Mode off and rely on the WAF rules instead.
 - **After any WAF, bot or rate-limit change**, in Google Search Console run URL Inspection → Test live URL on
   the home page and `/sitemap.xml`, and check the Sitemaps report reads "Success"; check Security → Events
   for blocks or challenges on Googlebot or Bingbot.
